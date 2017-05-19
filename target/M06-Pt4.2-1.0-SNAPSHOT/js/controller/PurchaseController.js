@@ -55,8 +55,8 @@
                     true, "POST", {controllerType: 2, action: 10000, JSONData: JSON.stringify($scope.purchase)});
 
             promise.then(function (outputData) {
-                
                 if (outputData[0] === true) {
+                    alert("Purchased successfully!");
                     var purchaseObj = new Purchase();
                     purchaseObj.construct(outputData[1].id, $scope.$parent.idUser, $scope.selectedProduct.id, $scope.purchase.deliveryDate, $scope.purchase.specialRequests, $scope.purchase.specialInstructions);
                 } else {

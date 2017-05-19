@@ -90,4 +90,15 @@ $(document).ready(function () {
         };
     });
     
+    pharmacyApp.directive("purchasePagination", function () {
+        return {
+            restrict: 'E',
+            templateUrl: "view/templates/purchase-pagination.html",
+            controller: function () {
+
+            },
+            controllerAs: 'purchasePagination'
+        };
+    });
+    
 })();
