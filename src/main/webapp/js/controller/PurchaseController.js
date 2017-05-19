@@ -10,6 +10,9 @@
     angular.module('pharmacyApp').controller("PurchaseController", ['$http', '$scope', '$window', '$cookies', 'accessService', 'userConnected', function ($http, $scope, $window, $cookies, accessService, userConnected) {
         $scope.purchase = new Purchase();
         $scope.purchasesArray = new Array();
+        //pagination
+        $scope.currentPage=1;
+        $scope.pageSize = 5;
         
         //Scope variables
         $scope.specialRequests = ["Dlivery at the main hospital", "Fragil material, must be sended in a special vehicle", "Product easily contamined, special protection nedded"];
@@ -63,6 +66,47 @@
                 }
             });
         }
+        
+        this.updatePurchase = function (){
+            $scope.purchasesArray = angular.copy($scope.purchasesArray);
+            //console.log($scope.reviewsArray);
+            var promise = accessService.getData("MainController",
+                    true, "POST", { controllerType: 2, action: 10100, JSONData: JSON.stringify($scope.purchasesArray) });
+
+            promise.then(function (outPutData) {
+                if (outPutData[0] === true) {
+                            alert("Updated sucessfully");
+                } else {
+                    if (angular.isArray(outPutData[1])) {
+                        alert(outPutData[1]);
+                    } else { alert("There has been an error in the server, try later"); }
+                }
+
+            });
+        }
+        this.deletePurcahse = function (index){
+            var removePurchase = new Product();
+            removePurchase = angular.copy($scope.purchasesArray[index]);
+            $scope.purchasesArray.splice(index, 1);
+
+            var promise = accessService.getData("MainController",
+                true, "POST", { controllerType: 2, action: 10200, JSONData: JSON.stringify(removePurchase) });
+
+            promise.then(function (outputData) {
+                //console.log(outputData);
+                if (outputData[0] === true) {
+                    alert("Removed succesfully");
+                } else {
+                    if (angular.isArray(outputData[1])) {
+                        alert(outPutData[1]);
+                    } else {
+                        alert("There has been an error in the server, try later");
+                    }
+                }
+            });
+
+        }
+        
         
     }]);
 
