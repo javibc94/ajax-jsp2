@@ -105,8 +105,9 @@
             promise.then(function (outputData) {
                 //console.log(outputData);
                 if (outputData[0] === true) {
-                    alert("Removed succesfully");
+                    alert("Removed succesfully!");
                 } else {
+                    alert("Error removing product!");
                     if (angular.isArray(outputData[1])) {
                         alert(outPutData[1]);
                     } else {
