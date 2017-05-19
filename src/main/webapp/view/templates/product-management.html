@@ -1,0 +1,43 @@
+<div class="col-md-2">
+    <table class="table table-bordered">
+        <tr>
+            <th>Products per page</th>
+        </tr>
+        <tr>
+            <td>
+                <input type="number" min="1" max="100" class="form-control" ng-model="pageSize" />
+            </td>
+        </tr>
+    </table>
+</div>
+<br><br><br><br>
+<form name="productsManagement" ng-submit="productsManagement.$valid && productCtrl.updateProduct()" novalidate>
+    <h1>Products</h1>
+    <table class="table table-bordered">
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+        <tr dir-paginate="product in productsArray | itemsPerPage: pageSize" current-page="currentPage">
+            <td>
+                <input type="text" ng-model="product.name" required />
+            </td>
+            <td>
+                <input type="number" ng-model="product.price" required />
+            </td>
+            <td>
+                <button ng-click="productCtrl.deleteProduct($index)" class="btn btn-danger glyphicon glyphicon-remove"></button>
+            </td>
+        </tr>
+    </table>
+
+    <div class="text-left" boundary-links="true">
+        <dir-pagination-controls boundary-links="true" template-url="view/templates/dir-pagination-controls.html"></dir-pagination-controls>
+    </div>
+    <button type="submit" class="btn btn-success" ng-disabled="productsManagement.$invalid">
+        Modify products
+    </button>
+    <button class="btn btn-success" ng-click="showForm=2">
+        Add product
+    </button>
+</form>
