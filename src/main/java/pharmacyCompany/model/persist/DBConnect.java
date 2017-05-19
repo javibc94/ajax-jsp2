@@ -24,8 +24,8 @@ import java.util.logging.XMLFormatter;
 public final class DBConnect {
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     private static final String BD_URL = "jdbc:mysql://"+"127.0.0.1/pharmacyCompany";
-    private static final String USER = "root";
-    private static final String PASSWORD = "alumne";
+    private static final String USER = "dax";
+    private static final String PASSWORD = "dax";
     
     private static DBConnect instance = null;
     

@@ -37,26 +37,29 @@
     </head>
     <body class="documentColor" ng-controller="SessionController as sessionCtrl" ng-init="userAction = 1; sessionCtrl.sessionControl()">
         <div ng-controller="ProductController as productCtrl" ng-init="productCtrl.loadProducts()">    
+            <div ng-controller="PurchaseController as purchaseCtrl" ng-init="">
             <div ng-show="userType==0">
                 <!--<a href="#">Products management</a>
                 <a ng-click="showForm=3">Purchase management</a>-->
                 <div ng-show="showForm==0" id="productForm">
-                    <!--<add-product></add-product>-->
+                    <a ng-click="showForm=0">Product management</a>
+                    <a ng-click="showForm=3">Purchase management</a>
                     <product-management></product-management>
                 </div>
                 <div ng-show="showForm==2" id="productForm">
                     <add-product></add-product>
                 </div>
                 <div ng-show="showForm==3" id="purchaseMangForm">
-                    <purchase-management-real></purchase-management-real>
+                    <purchase-pagination></purchase-pagination>
                 </div>
             </div>
-            <div ng-show="userType==1" ng-controller="PurchaseController as purchaseCtrl">
+            <div ng-show="userType==1" >
                 <a href="#" ng-click="showForm=1">Purchase a product</a>
                 <div id="purchaseForm" ng-show="showForm==1">
                     <purchase-management></purchase-management>
                 </div>
             </div>
+           </div>
         </div>
         <button ng-click="sessionCtrl.logOut()">Log out</button>
     </body>

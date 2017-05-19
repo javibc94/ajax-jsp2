@@ -45,6 +45,31 @@
             }
         }
         
+        this.loadProducts = function () {
+
+            //Server conenction to verify user's data
+            var promise = accessService.getData("MainController",
+                    true, "POST", {controllerType: 2, action: 10300, JSONData: {products: ''} });
+
+            promise.then(function (outputData) {
+                if (outputData[0] === true) {
+                    for (var i=0; i<outputData[1].length; i++) {
+                        var purchaseObj = new Purchase();
+                        purchaseObj.construct(outputData[1][i].id,outputData[1][i].idUser,outputData[1][i].idProduct, outputData[1][i].deliveryDate, outputData[1][i].specialRequests,outputData[1][i].specialInstructions);
+                        $scope.purchasesArray.push(purchaseObj);
+                    }
+                    
+                } else {
+                    if (angular.isArray(outputData[1])) {
+                        console.log(outputData);
+                    } else {
+                        alert("There has been an error in the server, try later");
+                    }
+                }
+            });
+
+        }
+        
         this.addPurchase = function () {
             $scope.purchase.setIdUser($scope.$parent.idUser); //Get user id from session controller
             $scope.purchase.setIdProduct($scope.selectedProduct.id);
