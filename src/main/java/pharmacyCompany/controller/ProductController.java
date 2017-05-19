@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import pharmacyCompany.model.Product;
@@ -54,26 +55,30 @@ public class ProductController implements ControllerInterface {
                 // 1. get received JSON data from request                                
                 String JSONData = request.getParameter("JSONData");
                 JSONParser jsonParser = new JSONParser();
-                JSONObject jsonObject = (JSONObject) jsonParser.parse(JSONData);
+                JSONObject jsonObject;
 
                 // 2. Accés to database in order to get data  
                 switch (action) {
                     case 10000:
+                        jsonObject = (JSONObject) jsonParser.parse(JSONData);
                         outPutData = listAll();
                         break;
 
                     case 10100:
+                        jsonObject = (JSONObject) jsonParser.parse(JSONData);
                         Product p = new Product(0, (String) jsonObject.get("name"), Double.valueOf(jsonObject.get("price").toString()));
                         outPutData = addProduct(p);
                         break;
 
                     case 10200:
-                        System.out.println("json:" + jsonObject);
-                        Product mp = new Product(Integer.valueOf(jsonObject.get("id").toString()), (String) jsonObject.get("name"), Double.valueOf(jsonObject.get("price").toString()));
-                        outPutData = modifyProduct(mp);
+                        ArrayList<JSONObject> list = new ArrayList<>();
+                        list = (ArrayList<JSONObject>) jsonParser.parse(JSONData);
+                        
+                        outPutData = modifyProduct(list);
                         break;
 
                     case 10300:
+                        jsonObject = (JSONObject) jsonParser.parse(JSONData);
                         Product dp = new Product(Integer.valueOf(jsonObject.get("id").toString()), (String) jsonObject.get("name"), Double.valueOf(jsonObject.get("price").toString()));
                         outPutData = deleteProduct(dp);
                         break;
@@ -165,15 +170,24 @@ public class ProductController implements ControllerInterface {
         return outPutData;
     }
 
-    private ArrayList<Object> modifyProduct(Product mp) {
+    private ArrayList<Object> modifyProduct(ArrayList<JSONObject> mp) {
         ProductADO helper;
         ArrayList<Object> outPutData = new ArrayList<>();
 
         System.out.println(mp.toString());
         try {
             helper = new ProductADO();
-
-            int inst = helper.update(mp);
+            //FOREACH
+            int inst=0;
+            for(JSONObject product: mp){
+                Product p = new Product(
+                        Integer.valueOf(product.get("id").toString()), 
+                        (String) product.get("name"), 
+                        Double.valueOf(product.get("price").toString()));
+                
+                inst = helper.update(p);
+            }
+            
             if (inst == 0) {
                 outPutData.add(false);
                 List<String> errors = new ArrayList<>();
